@@ -41,23 +41,20 @@ export class News extends Component {
   };
 
   handleNextClick = async () => {
-    if (!(
-      this.state.page + 1 >
-      Math.ceil(this.state.totalResults / this.props.pageSize)
-    )){
+    if (!(this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize))) {
+      this.setState({ loading: true }); // Set loading state to true before fetching data
       let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&page=${
         this.state.page + 1
-      }&apiKey=db0a24fad96e41e2befd9428f39c4ccc&pageSize=${this.props.page}`;
-      this.setState({loading:true})
+      }&apiKey=db0a24fad96e41e2befd9428f39c4ccc&pageSize=${this.props.pageSize}`;
       let data = await fetch(url);
       let parsedData = await data.json();
       this.setState({
         page: this.state.page + 1,
         articles: parsedData.articles,
-        loading:false
-      })
+        loading: false // Set loading state to false after data is fetched
+      });
     }
-  }
+  };
 
   render() {
     return (
